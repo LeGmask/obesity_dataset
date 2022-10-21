@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "obesity-dataset"
+version = "0.1.0"
+description = ""
+authors = ["Marion ROSEC"]
+readme = "README.md"
+packages = []
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
