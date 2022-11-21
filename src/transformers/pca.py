@@ -26,7 +26,10 @@ class PCA(BaseTransformer):
 		:param X: the data to fit the PCA to
 		"""
 
-		self.correlation_matrix = 1 / len(X) * np.dot(X.T, X)
+		if isinstance(X, pd.DataFrame):
+			self.correlation_matrix = X.corr().to_numpy()
+		else:
+			self.correlation_matrix = 1 / len(X) * np.dot(X.T, X)
 
 		self.eigenvalues, self.eigenvectors = np.linalg.eig(self.correlation_matrix)
 
