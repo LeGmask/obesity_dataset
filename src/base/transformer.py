@@ -18,7 +18,7 @@ class BaseTransformer(ABC):
 	"""
 
 	@abstractmethod
-	def fit(self, X: np.ndarray | pd.DataFrame) -> np.ndarray | pd.DataFrame:
+	def fit(self, X: np.ndarray | pd.DataFrame) -> None:
 		"""
 		Fits the transformer to the data.
 
