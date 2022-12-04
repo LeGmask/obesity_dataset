@@ -71,7 +71,7 @@ class PCA(BaseTransformer):
 		"""
 		self.n_components = n_components
 
-	def individual_quality(self, X: np.ndarray|pd.DataFrame) -> np.ndarray:
+	def individual_quality(self, X: np.ndarray | pd.DataFrame) -> np.ndarray:
 		if self.correlation_matrix is None:
 			raise NotFittedError('PCA has not been fitted yet.')
 
@@ -83,7 +83,8 @@ class PCA(BaseTransformer):
 		score = np.empty(len(X))
 
 		for index, values in enumerate(X):
-			score[index] = np.square(alpha[index])/sum(np.square(values)) + np.square(beta[index])/sum(np.square(values))
+			score[index] = np.square(alpha[index]) / sum(np.square(values)) + np.square(beta[index]) / sum(
+				np.square(values))
 		return score
 
 
