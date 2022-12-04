@@ -9,6 +9,7 @@ from src.base.classifier import BaseClassifier
 
 class ExpectationMaximisation(BaseClassifier):
 	def __init__(self, k_clusters: int, max_iter: int = 30, tol: float = 1e-3):
+		self.ml: List[float] = []
 		self.labels_: List | None = None
 		self.responsibilities = None
 		self.parameters: None | List | np.ndarray = None
@@ -84,12 +85,19 @@ class ExpectationMaximisation(BaseClassifier):
 
 	def fit(self, X: np.ndarray | pd.DataFrame) -> None:
 		self.init_random_parameters(X.shape)
+		self.ml = []
 
 		for _ in range(self.max_iter):
 			self.compute_responsibilities(X)
+			self.ml.append(self.maximum_likelihood(X))
 			self.parameters_iter(X)
 
 		self.predict(X)
 
 	def predict(self, X):
 		self.labels_ = np.argmax(self.responsibilities, axis=1)
+
+	def maximum_likelihood(self, X):
+		return np.sum(np.log(sum(
+			self.parameters[k][2] * self.compute_gaussian(X, self.parameters[k][0], self.parameters[k][1]) for k in
+			range(self.k_clusters))))
