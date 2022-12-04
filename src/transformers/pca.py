@@ -87,6 +87,15 @@ class PCA(BaseTransformer):
 				np.square(values))
 		return score
 
+	def get_saturations(self) -> np.ndarray:
+		"""
+		Returns the saturations of the PCA.
 
+		:return: returns a numpy array containing the saturations of the PCA
+		"""
+		if self.eigenvalues is None:
+			raise NotFittedError('PCA has not been fitted yet.')
 
+		return np.array(
+			[np.multiply(np.sqrt(self.eigenvalues), self.eigenvectors[j, :]) for j in range(len(self.eigenvalues))])
 
