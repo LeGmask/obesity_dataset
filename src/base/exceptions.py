@@ -1,3 +1,2 @@
 class NotFittedError(Exception):
-	pass
-
+    pass
