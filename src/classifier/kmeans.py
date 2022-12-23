@@ -12,13 +12,7 @@ class KMeans(BaseClassifier):
     the cluster.
     """
 
-    def __init__(
-        self,
-        k: int = 2,
-        tol: float = 0.0001,
-        max_iter: int = 1000,
-        centroids_init: str = "kmeans++",
-    ) -> None:
+    def __init__(self,k: int = 2,tol: float = 0.0001,max_iter: int = 1000,centroids_init: str = "kmeans++") -> None:
         """
         Initializes the K-Means classifier.
 
