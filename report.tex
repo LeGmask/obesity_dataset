@@ -1,0 +1,51 @@
+\LoadClass{NewTeX}
+\documentclass{NewTeX}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{multirow}
+\title{2SV317-BM: Projet -- Analyses exploratoires de données multivariées}
+\author{Marion ROSEC, Evann DREUMONT}
+\date{Décembre 2022}
+
+\setmonofont{Fira Code Light}[
+    Scale=0.8,
+]
+
+\usepackage{hyperref}
+
+\begin{document}
+
+    \maketitle
+
+
+    \section{Introduction}\label{sec:introduction}
+
+
+    \section{Méthodologie}\label{sec:methodologie}
+
+    Lors de ce projet, nous avons pour des raisons de simplicité décider de n'utiliser que des classes et de n'avoir dans le notebooks réalisant l'annalyse que des appels a des fonctions préalablement définies.
+    Toujours dans un but d'avoir un code propre et compréhensible, nous avons choisi de nous inspirer de l'API utilisé dans le package \verb|sklearn| qui nous a été introduit au cours de ce cours.
+    Nous avons donc défini deux classes abstraites qui se trouvent dans le dossier base, qui, bien que définissant une méthode qui sera hérité et deux méthodes abstraites, tend plus vers une interface que vers une classe abstraite et dans les faits, ici, nous avons plus affaire a une composition que de l'héritage classique, mais là n'est pas le sujet.
+    Nous avons ainsi :
+    \begin{itemize}
+        \item La classe abstraite \verb|BaseTransformer|: la classe avec laquelle nous implémenterons les différentes méthodes qui nous permetterons de transformer nos données.
+        Elle définit deux méthodes abstraites :
+        \subitem \verb|fit|: qui calcule les paramètres nécessaires au modèle pour pouvoir ensuite transformer les données
+        \subitem \verb|transform|: qui va alors transformer les données passées en paramètres en fonctions des paramètres calculer au préalable. \\
+        Elle définit également une méthode \verb|fit_transform| qui va executer la méthode \verb|fit| et retourner le résultat de la méthode \verb|transform|.
+        \item Et La classe abstraite \verb|BaseClassifier|: la classe avec laquelle nous hériterons lorsque nous implémenterons nos classifieurs.
+        Elle définit deux méthodes abstraites :
+        \subitem \verb|fit|: qui calcul les paramètres nécessaire au classifieur.
+        \subitem \verb|predict|: qui associe classifie les données fournies en entrée, il faut donc au préalable avoir fait appel à la méthode \verb|fit| de la classe. \\
+        Elle a défini également une méthode \verb|fit_predict| qui va executer la méthode \verb|fit| et retourner le résultat de la méthode \verb|predict|.
+    \end{itemize}
+
+
+
+    \section{Résultats}\label{sec:resultats}
+
+
+    \section{Conclusion}\label{sec:conclusion}
+
+
+\end{document}
