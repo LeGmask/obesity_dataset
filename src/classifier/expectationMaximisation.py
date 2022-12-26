@@ -3,12 +3,20 @@ from typing import List
 import numpy as np
 import pandas as pd
 import scipy
+from numpy import ndarray
 
 from src.base.classifier import BaseClassifier
 
 
 class ExpectationMaximisation(BaseClassifier):
     def __init__(self, k_clusters: int, max_iter: int = 100, tol: float = 1e-3):
+        """
+        Initialize the model
+
+        :param k_clusters: number of clusters
+        :param max_iter: maximum number of iterations
+        :param tol: tolerance for the convergence
+        """
         self.ml: List[float] = []
         self.labels_: List | None = None
         self.responsibilities = None
@@ -46,7 +54,7 @@ class ExpectationMaximisation(BaseClassifier):
         ]
 
     @staticmethod
-    def compute_gaussian(x, mu, sigma):
+    def compute_gaussian(x: np.ndarray, mu: ndarray[float], sigma: ndarray[float]):
         """
         Compute the gaussian distribution
 
@@ -58,7 +66,12 @@ class ExpectationMaximisation(BaseClassifier):
         multivariate_normal = scipy.stats.multivariate_normal(mu, sigma)
         return multivariate_normal.pdf(x)
 
-    def compute_responsibilities(self, X):
+    def compute_responsibilities(self, X: np.ndarray | pd.DataFrame):
+        """
+        Compute the responsibilities of each data point for each cluster
+
+        :param X: data
+        """
         self.responsibilities = np.zeros((X.shape[0], self.k_clusters))
 
         for i in range(X.shape[0]):
@@ -70,7 +83,12 @@ class ExpectationMaximisation(BaseClassifier):
                 )
             self.responsibilities[i, :] /= np.sum(self.responsibilities[i, :])
 
-    def parameters_iter(self, X):
+    def parameters_iter(self, X: np.ndarray | pd.DataFrame):
+        """
+        Update the parameters of the model
+
+        :param X: data
+        """
         for k in range(self.k_clusters):
             N_k = np.sum(self.responsibilities[:, k])
             self.parameters[k][0] = (1 / N_k) * np.sum(
@@ -93,6 +111,12 @@ class ExpectationMaximisation(BaseClassifier):
             self.parameters[k][2] = N_k / X.shape[0]
 
     def fit(self, X: np.ndarray | pd.DataFrame) -> None:
+        """
+        Fit the model to the data by maximizing the likelihood
+
+        :param X: data
+        """
+
         self.init_random_parameters(X.shape)
         self.ml = []
 
@@ -115,10 +139,24 @@ class ExpectationMaximisation(BaseClassifier):
 
         self.predict(X)
 
-    def predict(self, X):
-        self.labels_ = np.argmax(self.responsibilities, axis=1)
+    def predict(self, X: np.ndarray | pd.DataFrame) -> ndarray[int]:
+        """
+        Predict the labels of the data
 
-    def maximum_likelihood(self, X):
+        :param X: data
+        :return: labels
+        """
+        self.compute_responsibilities(X)
+        self.labels_ = np.argmax(self.responsibilities, axis=1)
+        return self.labels_
+
+    def maximum_likelihood(self, X: np.ndarray | pd.DataFrame):
+        """
+        Compute the maximum likelihood for the current parameters
+
+        :param X: data
+        :return: maximum likelihood
+        """
         return np.sum(
             np.log(
                 sum(
